@@ -50,8 +50,8 @@
 </head>
 <body>
   <input type="text" id="name" placeholder="Name" autocomplete="off">
-  <input type="number" id="number" placeholder="Number" inputmode="numeric">
-  <input type="number" id="multiplier" placeholder="Multiply by (optional)" inputmode="decimal">
+  <input type="number" id="number" placeholder="Kjs" inputmode="numeric">
+  <input type="number" id="multiplier" placeholder="Serve Multiplier" inputmode="decimal">
   <button id="send">Send</button>
   <div id="status"></div>
 
@@ -89,7 +89,7 @@
       number = number * multiplier;
     }
 
-    status.textContent = "Sending...";
+    status.textContent = "Off I go...";
     status.style.color = "#555";
 
     const data = new URLSearchParams();
@@ -98,7 +98,7 @@
 
     fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: data })
       .then(function() {
-        status.textContent = "Sent!";
+        status.textContent = "Yarr! sent!";
         status.style.color = "#188038";
         document.getElementById("name").value = "";
         document.getElementById("number").value = "";
