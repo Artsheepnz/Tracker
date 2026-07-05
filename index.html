@@ -49,9 +49,9 @@
   #totals {
     width: 100%;
     max-width: 400px;
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #e0e0e0;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
     display: flex;
     justify-content: space-around;
     text-align: center;
@@ -70,12 +70,6 @@
 </style>
 </head>
 <body>
-  <input type="text" id="name" placeholder="Name" autocomplete="off">
-  <input type="number" id="number" placeholder="Kjs" inputmode="numeric">
-  <input type="number" id="multiplier" placeholder="Serve multiplier" inputmode="decimal">
-  <button id="send">Send</button>
-  <div id="status"></div>
-
   <div id="totals">
     <div class="totalBox">
       <div class="totalLabel">Today's Count</div>
@@ -86,6 +80,12 @@
       <div class="totalValue" id="entriesValue">-</div>
     </div>
   </div>
+
+  <input type="text" id="name" placeholder="Name" autocomplete="off">
+  <input type="number" id="number" placeholder="Kjs" inputmode="numeric">
+  <input type="number" id="multiplier" placeholder="Serve multiplier" inputmode="decimal">
+  <button id="send">Send</button>
+  <div id="status"></div>
 
 <script>
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwtSR2oiRlhbaX5THr44uzqYJ4IGkyvcg5xcfZaCJHlLYLLQ4VEcSUT_Ph_ukABPa4E/exec";
