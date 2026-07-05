@@ -51,6 +51,7 @@
 <body>
   <input type="text" id="name" placeholder="Name" autocomplete="off">
   <input type="number" id="number" placeholder="Number" inputmode="numeric">
+  <input type="number" id="multiplier" placeholder="Multiply by (optional)" inputmode="decimal">
   <button id="send">Send</button>
   <div id="status"></div>
 
@@ -62,12 +63,30 @@
 
   btn.addEventListener("click", function() {
     const name = document.getElementById("name").value.trim();
-    const number = document.getElementById("number").value.trim();
+    const numberRaw = document.getElementById("number").value.trim();
+    const multiplierRaw = document.getElementById("multiplier").value.trim();
 
-    if (!number) {
+    if (!numberRaw) {
       status.textContent = "Enter a number.";
       status.style.color = "#d93025";
       return;
+    }
+
+    let number = parseFloat(numberRaw);
+    if (isNaN(number)) {
+      status.textContent = "Number is not valid.";
+      status.style.color = "#d93025";
+      return;
+    }
+
+    if (multiplierRaw) {
+      const multiplier = parseFloat(multiplierRaw);
+      if (isNaN(multiplier)) {
+        status.textContent = "Multiplier is not valid.";
+        status.style.color = "#d93025";
+        return;
+      }
+      number = number * multiplier;
     }
 
     status.textContent = "Sending...";
@@ -83,6 +102,7 @@
         status.style.color = "#188038";
         document.getElementById("name").value = "";
         document.getElementById("number").value = "";
+        document.getElementById("multiplier").value = "";
       })
       .catch(function() {
         status.textContent = "Failed. Try again.";
