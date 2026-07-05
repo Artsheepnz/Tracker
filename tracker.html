@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Number Tracker</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    background: #ffffff;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+  input {
+    width: 100%;
+    max-width: 400px;
+    padding: 18px;
+    margin: 10px 0;
+    font-size: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    outline: none;
+  }
+  input:focus { border-color: #4285f4; }
+  button {
+    width: 100%;
+    max-width: 400px;
+    padding: 18px;
+    margin: 20px 0 0;
+    font-size: 22px;
+    background: #4285f4;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  button:active { background: #3367d6; }
+  #status {
+    margin-top: 20px;
+    font-size: 18px;
+    min-height: 24px;
+  }
+</style>
+</head>
+<body>
+  <input type="text" id="name" placeholder="Name" autocomplete="off">
+  <input type="number" id="number" placeholder="Number" inputmode="numeric">
+  <button id="send">Send</button>
+  <div id="status"></div>
+
+<script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby3stCoxHU2GVh0hi726Qt1YW1gNsHqYxokXWcHFHAQ5bZANblkJ9dewjax2RVJuJhC/exec
+";
+
+  const btn = document.getElementById("send");
+  const status = document.getElementById("status");
+
+  btn.addEventListener("click", function() {
+    const name = document.getElementById("name").value.trim();
+    const number = document.getElementById("number").value.trim();
+
+    if (!number) {
+      status.textContent = "Enter a number.";
+      status.style.color = "#d93025";
+      return;
+    }
+
+    status.textContent = "Sending...";
+    status.style.color = "#555";
+
+    const data = new URLSearchParams();
+    data.append("name", name);
+    data.append("number", number);
+
+    fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: data })
+      .then(function() {
+        status.textContent = "Sent!";
+        status.style.color = "#188038";
+        document.getElementById("name").value = "";
+        document.getElementById("number").value = "";
+      })
+      .catch(function() {
+        status.textContent = "Failed. Try again.";
+        status.style.color = "#d93025";
+      });
+  });
+</script>
+</body>
+</html>
