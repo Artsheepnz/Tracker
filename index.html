@@ -46,20 +46,64 @@
     font-size: 18px;
     min-height: 24px;
   }
+  #totals {
+    width: 100%;
+    max-width: 400px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+  }
+  .totalBox { flex: 1; }
+  .totalLabel {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 6px;
+  }
+  .totalValue {
+    font-size: 32px;
+    font-weight: 600;
+    color: #202124;
+  }
 </style>
 </head>
 <body>
   <input type="text" id="name" placeholder="Name" autocomplete="off">
   <input type="number" id="number" placeholder="Kjs" inputmode="numeric">
-  <input type="number" id="multiplier" placeholder="Serve Multiplier" inputmode="decimal">
+  <input type="number" id="multiplier" placeholder="Serve multiplier" inputmode="decimal">
   <button id="send">Send</button>
   <div id="status"></div>
 
+  <div id="totals">
+    <div class="totalBox">
+      <div class="totalLabel">Today's Count</div>
+      <div class="totalValue" id="countValue">-</div>
+    </div>
+    <div class="totalBox">
+      <div class="totalLabel">Today's Entries</div>
+      <div class="totalValue" id="entriesValue">-</div>
+    </div>
+  </div>
+
 <script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby3stCoxHU2GVh0hi726Qt1YW1gNsHqYxokXWcHFHAQ5bZANblkJ9dewjax2RVJuJhC/exec";
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw-k3vbeDTMX_OCVXGvtxBqhuoQE7Q2rsETIy_z_uFjEJBz3QfzuL02FgZW7-CBmBqz/exec";
 
   const btn = document.getElementById("send");
   const status = document.getElementById("status");
+
+  function loadTotals() {
+    fetch(SCRIPT_URL)
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        document.getElementById("countValue").textContent = data.count;
+        document.getElementById("entriesValue").textContent = data.entries;
+      })
+      .catch(function() {
+        // leave the dashes if it can't load
+      });
+  }
 
   btn.addEventListener("click", function() {
     const name = document.getElementById("name").value.trim();
@@ -89,7 +133,7 @@
       number = number * multiplier;
     }
 
-    status.textContent = "Off I go...";
+    status.textContent = "off i go...";
     status.style.color = "#555";
 
     const data = new URLSearchParams();
@@ -98,17 +142,20 @@
 
     fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: data })
       .then(function() {
-        status.textContent = "Yarr! sent!";
+        status.textContent = "Yarr sent!";
         status.style.color = "#188038";
         document.getElementById("name").value = "";
         document.getElementById("number").value = "";
         document.getElementById("multiplier").value = "";
+        setTimeout(loadTotals, 1500);
       })
       .catch(function() {
         status.textContent = "Failed. Try again.";
         status.style.color = "#d93025";
       });
   });
+
+  loadTotals();
 </script>
 </body>
 </html>
